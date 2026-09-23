@@ -377,9 +377,20 @@
 
   async function importFile(file) {
     const processing = document.querySelector('#feltProcessing')
+    const status = document.querySelector('#feltProcessingStatus')
+    const detail = document.querySelector('#feltProcessingDetail')
     processing.hidden = false
+    status.textContent = '正在加载本地 u2netp 模型…'
+    detail.textContent = '图片只在浏览器内处理，不会上传服务器'
     try {
-      const result = await global.BeadyBackgroundRemoval.removeBackground(file)
+      const result = await global.BeadyBackgroundRemoval.removeBackground(file, {
+        onProgress(progress) {
+          status.textContent = progress.message || '正在本机处理图片…'
+          detail.textContent = progress.phase === 'crop'
+            ? '正在保留完整主体并裁除外围透明区域'
+            : `本地 WASM 处理中 · ${Math.round(progress.progress || 0)}%`
+        }
+      })
       const artwork = { ...result, id: uid('source'), createdAt: Date.now() }
       state.artworks.unshift(artwork)
       await saveArtwork(artwork)

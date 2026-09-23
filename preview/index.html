@@ -201,7 +201,7 @@
       </footer>
 
       <div class="felt-processing" id="feltProcessing" hidden>
-        <div class="felt-loader"><i></i><strong>BiRefNet 正在识别主要前景…</strong><small>首次运行需加载模型，完成后将生成透明 PNG</small></div>
+        <div class="felt-loader"><i></i><strong id="feltProcessingStatus">正在本机识别主要前景…</strong><small id="feltProcessingDetail">首次需加载 u2netp，图片不会上传服务器</small></div>
       </div>
 
       <div class="felt-gallery-backdrop" id="feltGalleryBackdrop" hidden></div>
@@ -228,8 +228,10 @@
   <script src="../services/image/artifactCleaner.js?v=3"></script>
   <script src="../services/image/patternGenerator.js?v=3"></script>
   <script src="../services/image/beadGridRecognizer.js?v=1"></script>
-  <script src="./background-removal.js?v=2"></script>
-  <script src="./felt-board.js?v=2"></script>
+  <script src="./vendor/onnxruntime/ort.wasm.min.js?v=1"></script>
+  <script src="./vendor/rembg-web/index.umd.min.js?v=1"></script>
+  <script src="./background-removal.js?v=3"></script>
+  <script src="./felt-board.js?v=3"></script>
     <script src="./app.js?v=16"></script>
 </body>
 </html>
