@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Beady</title>
+    <link rel="stylesheet" href="./styles.css?v=14" />
+</head>
+<body>
+  <main class="app-shell">
+    <div id="homeView">
+    <header class="page-header">
+      <img class="brand-logo" src="../assets/images/beady-logo.png" alt="Beady" />
+      <span class="tagline">把喜欢的图片变成拼豆图纸</span>
+    </header>
+
+    <section class="page-content">
+      <label class="upload-card" id="uploadCard">
+        <input id="fileInput" type="file" accept="image/*" hidden />
+        <div class="upload-empty" id="uploadEmpty">
+          <img src="../assets/images/upload-cloud.png" alt="" />
+          <strong>点击上传一张图片</strong>
+          <span>支持 JPG、PNG、WEBP</span>
+        </div>
+        <div class="upload-preview" id="uploadPreview" hidden>
+          <img id="previewImage" alt="图片预览" />
+          <button class="remove-image" id="removeImage" type="button" aria-label="移除图片">×</button>
+          <button class="replace-image" type="button">▣&nbsp;&nbsp;更换图片</button>
+        </div>
+      </label>
+
+      <div class="intro-copy">
+        <h1>从一张图片开始</h1>
+        <p>上传图片，选择尺寸与颜色数量，轻松制作你的专属图纸</p>
+      </div>
+
+      <section class="settings-card" id="sizeCard">
+        <div class="section-heading">
+          <img src="../assets/images/canvas-size.png" alt="" />
+          <div><h2>图纸尺寸</h2><p>选择最终作品的豆数</p></div>
+        </div>
+        <div class="size-grid option-group" data-group="size">
+          <button type="button" data-value="52x52">52 × 52</button>
+          <button type="button" class="selected" data-value="78x78">78 × 78</button>
+          <button type="button" data-value="104x104">104 × 104</button>
+          <button type="button" data-value="120x120">120 × 120</button>
+        </div>
+        <div class="custom-panel" id="customSizePanel">
+          <button class="custom-trigger" id="customSizeTrigger" type="button"><span>自定义尺寸</span><span class="chevron">›</span></button>
+          <div class="custom-size-content" id="customSizeContent" hidden>
+            <div class="dimension-row">
+              <label>宽度<input id="customWidth" type="number" min="1" max="999" value="113" /></label>
+              <span>×</span>
+              <label>高度<input id="customHeight" type="number" min="1" max="999" value="78" /></label>
+            </div>
+            <button class="lock-row" id="lockRatio" type="button">
+              <span><strong>锁定原图比例</strong><small>修改一边时自动计算另一边</small></span>
+              <i class="switch on"><i></i></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings-card">
+        <div class="section-heading">
+          <img src="../assets/images/background.png" alt="" />
+          <div><h2>背景处理</h2><p>决定哪些区域参与生成</p></div>
+        </div>
+        <div class="background-list option-group" data-group="background">
+          <button class="large-option selected" type="button" data-value="keep">
+            <span class="option-art keep-art"><i></i></span>
+            <span class="option-copy"><strong>保留背景</strong><small>整张图片一起生成图纸</small></span>
+            <i class="radio"></i>
+          </button>
+          <button class="large-option" type="button" data-value="subject">
+            <span class="option-art subject-art"><i></i></span>
+            <span class="option-copy"><strong>仅保留主体</strong><small>去除背景，只转换主要对象</small></span>
+            <i class="radio"></i>
+          </button>
+        </div>
+      </section>
+
+      <section class="settings-card">
+        <div class="section-heading">
+          <img src="../assets/images/color-limit.png" alt="" />
+          <div><h2>颜色上限</h2><p>颜色越少，拼制越轻松</p></div>
+        </div>
+        <div class="color-grid option-group" data-group="color">
+          <button type="button" data-value="16">16</button>
+          <button type="button" class="selected recommended-wrap" data-value="24">24<span class="recommended">推荐</span></button>
+          <button type="button" data-value="32">32</button>
+          <button type="button" data-value="48">48</button>
+        </div>
+        <button class="custom-color" id="customColor" type="button">
+          <span><strong>自定义颜色数</strong><small>最多 64 色</small></span>
+          <span class="custom-color-value" id="customColorValue" hidden><input type="number" min="1" max="64" value="24" /> 色</span>
+          <span class="chevron" id="customColorChevron">›</span>
+        </button>
+      </section>
+
+      <button class="generate-button" id="generateButton" type="button">生成图纸 <span>✦</span></button>
+      <p class="generate-tip">生成结果将使用颜色上限，不会强行填满颜色数</p>
+    </section>
+
+    <nav class="bottom-nav">
+      <button class="active" type="button"><span class="home-symbol">⌂</span><small>图纸生成</small></button>
+      <button type="button" data-nav="library"><span>▢</span><small>图库</small></button>
+      <button type="button" data-nav="felt"><span>✧</span><small>毛毡板</small></button>
+    </nav>
+    </div>
+
+    <section class="web-library" id="libraryView" hidden>
+      <header class="library-header">
+        <div class="library-brand"><img src="../assets/images/beady-logo.png" alt="Beady" /><span>你的拼豆图纸收藏 ✨</span></div>
+        <div class="library-actions"><button id="librarySearch" class="library-search" type="button" aria-label="搜索"><i></i></button><button id="libraryNew" class="library-new" type="button">＋ 添加图纸</button></div>
+      </header>
+      <div class="library-search-panel" id="librarySearchPanel" hidden><input id="librarySearchInput" placeholder="搜索尺寸或图纸" /></div>
+      <div class="library-scroll"><div class="library-shelves" id="libraryShelves"></div><div class="library-spacer"></div></div>
+      <nav class="bottom-nav library-nav">
+        <button type="button" data-library-nav="create"><span class="home-symbol">⌂</span><small>图纸生成</small></button>
+        <button class="active" type="button"><span>▢</span><small>图库</small></button>
+        <button type="button" data-nav="felt"><span>✧</span><small>毛毡板</small></button>
+      </nav>
+      <input id="libraryUploadInput" type="file" accept="image/*" hidden />
+      <div class="library-sheet" id="libraryAddSheet" hidden>
+        <button type="button" data-library-action="save">保存当前图纸到图库</button>
+        <button type="button" data-library-action="upload">上传自己的图纸</button>
+        <button type="button" data-library-action="cancel">取消</button>
+      </div>
+      <div class="library-sheet" id="patternActionSheet" hidden>
+        <button type="button" id="workbenchPatternAction">放到工作台</button>
+        <button type="button" id="favoritePatternAction">标记喜爱</button>
+        <button type="button" id="deletePatternAction" class="danger-action">删除图纸</button>
+        <button type="button" id="cancelPatternAction">取消</button>
+      </div>
+    </section>
+
+    <section class="web-result" id="resultView" hidden>
+      <header class="web-result-header">
+        <button id="backToHome" type="button">‹</button>
+        <img src="../assets/images/beady-logo.png" alt="Beady" />
+        <span></span>
+      </header>
+      <div class="web-result-scroll">
+        <div class="web-result-content">
+          <div class="web-summary">
+            <div><h1>你的拼豆图纸</h1><p>点击格子或下方色号可快速定位</p></div>
+            <strong id="resultDimensions">78 × 78</strong>
+          </div>
+          <div class="web-canvas-card">
+            <div class="web-canvas-viewport"><canvas id="resultCanvas"></canvas></div>
+            <div class="web-canvas-toolbar">
+              <button id="zoomOut" type="button">−</button><span id="zoomLabel">100%</span><button id="zoomIn" type="button">＋</button>
+              <i></i><small>滚轮/双指缩放 · 拖动画布</small>
+            </div>
+          </div>
+          <div class="web-selection-tip" id="selectionTip" hidden><span id="selectionText"></span><button id="clearSelection" type="button">取消高亮</button></div>
+          <div class="web-color-card">
+            <div class="web-color-heading"><div><h2>颜色清单</h2><p id="colorSummary"></p></div><span>按数量排序</span></div>
+            <div class="web-color-list" id="resultColorList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="felt-view" id="feltView" hidden>
+      <div class="felt-canvas" id="feltCanvas" aria-label="毛毡板无限画布">
+        <div class="felt-world" id="feltWorld"></div>
+        <div class="felt-empty" id="feltEmpty">
+          <span>✦</span>
+          <strong>把快乐钉在这里</strong>
+          <small>添加你的第一个拼豆作品</small>
+        </div>
+      </div>
+
+      <header class="felt-header">
+        <button class="felt-brand" id="feltBrand" type="button" aria-label="返回图纸生成">
+          <img src="../assets/images/beady-logo.png" alt="Beady" />
+          <span>Pin your little happiness ☺</span>
+        </button>
+        <div class="felt-tools">
+          <button id="feltUndo" type="button" aria-label="撤销" disabled>↶</button>
+          <button id="feltRedo" type="button" aria-label="重做" disabled>↷</button>
+          <button class="felt-fit" id="feltFit" type="button"><i></i><span>适应</span></button>
+        </div>
+      </header>
+
+      <div class="felt-hint" id="feltHint">拖动空白处浏览画布 · 点击作品进行操作</div>
+
+      <footer class="felt-dock">
+        <div class="felt-actions">
+          <button class="felt-mine" id="feltMine" type="button"><span>◈</span>我的拼豆</button>
+          <button class="felt-add" id="feltAdd" type="button"><span>＋</span>添加拼豆</button>
+          <input id="feltFileInput" type="file" accept="image/*" hidden />
+        </div>
+        <nav class="felt-nav" aria-label="主导航">
+          <button type="button" data-felt-nav="home"><span>⌂</span><small>图纸生成</small></button>
+          <button type="button" data-felt-nav="library"><span>▢</span><small>图库</small></button>
+          <button class="active" type="button"><span>✧</span><small>毛毡板</small></button>
+        </nav>
+      </footer>
+
+      <div class="felt-processing" id="feltProcessing" hidden>
+        <div class="felt-loader"><i></i><strong>BiRefNet 正在识别主要前景…</strong><small>首次运行需加载模型，完成后将生成透明 PNG</small></div>
+      </div>
+
+      <div class="felt-gallery-backdrop" id="feltGalleryBackdrop" hidden></div>
+      <aside class="felt-gallery" id="feltGallery" hidden aria-label="我的拼豆">
+        <div class="felt-gallery-handle"></div>
+        <header><div><h2>我的拼豆</h2><p>已生成透明背景的作品</p></div><button id="feltGalleryClose" type="button" aria-label="关闭">×</button></header>
+        <div class="felt-gallery-grid" id="feltGalleryGrid"></div>
+      </aside>
+    </section>
+    <div class="toast" id="toast" role="status"></div>
+  </main>
+  <script src="../services/image/colorSpace.js?v=1"></script>
+  <script src="../data/mard221.js?v=1"></script>
+  <script src="../services/image/sampler.js?v=3"></script>
+  <script src="../services/image/quantizer.js?v=1"></script>
+  <script src="../services/image/colorMatcher.js?v=1"></script>
+  <script src="../services/image/backgroundProcessor.js?v=1"></script>
+  <script src="../services/image/fragmentOptimizer.js?v=1"></script>
+  <script src="../services/image/edgeDetector.js?v=2"></script>
+  <script src="../services/image/spatialRefiner.js?v=2"></script>
+  <script src="../services/image/regionCleaner.js?v=2"></script>
+  <script src="../services/image/paletteQuantizer.js?v=3"></script>
+  <script src="../services/image/labelOptimizer.js?v=3"></script>
+  <script src="../services/image/artifactCleaner.js?v=3"></script>
+  <script src="../services/image/patternGenerator.js?v=3"></script>
+  <script src="../services/image/beadGridRecognizer.js?v=1"></script>
+  <script src="./background-removal.js?v=2"></script>
+  <script src="./felt-board.js?v=2"></script>
+    <script src="./app.js?v=16"></script>
+</body>
+</html>

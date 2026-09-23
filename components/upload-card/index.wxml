@@ -1,0 +1,17 @@
+<view class="upload-card">
+  <view wx:if="{{!imagePath}}" class="empty-state" bindtap="chooseImage">
+    <image class="upload-illustration" src="/assets/images/upload-cloud.png" mode="aspectFit" aria-hidden="true"></image>
+    <text class="upload-title">点击上传一张图片</text>
+    <text class="upload-subtitle">支持 JPG、PNG、WEBP</text>
+  </view>
+
+  <view wx:else class="preview-state">
+    <image class="preview-image" src="{{imagePath}}" mode="aspectFill"></image>
+    <view class="preview-shade"></view>
+    <button class="remove-button" aria-label="移除图片" catchtap="removeImage">×</button>
+    <button class="replace-button" bindtap="chooseImage">
+      <text class="replace-icon">▣</text>
+      <text>更换图片</text>
+    </button>
+  </view>
+</view>

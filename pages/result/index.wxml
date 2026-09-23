@@ -1,0 +1,74 @@
+<view class="result-page">
+  <view class="safe-top"></view>
+  <view class="result-header">
+    <button class="back-button" bindtap="goBack">‹</button>
+    <image class="result-logo" src="/assets/images/beady-logo.png" mode="aspectFit"></image>
+    <view class="header-spacer"></view>
+  </view>
+
+  <scroll-view class="result-scroll" scroll-y="true">
+    <view class="result-content">
+      <view class="summary-row">
+        <view>
+          <text class="result-title">你的拼豆图纸</text>
+          <text class="result-subtitle">点击格子或下方色号可快速定位</text>
+        </view>
+        <view class="dimension-badge">{{width}} × {{height}}</view>
+      </view>
+
+      <view class="canvas-card">
+        <view class="canvas-viewport">
+          <canvas
+            type="2d"
+            id="patternCanvas"
+            class="pattern-canvas"
+            bindtouchstart="onCanvasTouchStart"
+            catchtouchmove="onCanvasTouchMove"
+            bindtouchend="onCanvasTouchEnd"
+            bindtouchcancel="onCanvasTouchEnd"
+          ></canvas>
+        </view>
+        <view class="canvas-toolbar">
+          <button bindtap="zoomOut">−</button>
+          <text>{{zoomLabel}}</text>
+          <button bindtap="zoomIn">＋</button>
+          <view class="toolbar-divider"></view>
+          <text class="canvas-hint">双指缩放 · 单指拖动</text>
+        </view>
+      </view>
+
+      <view class="selection-tip" wx:if="{{selectedCode}}">
+        <text>正在高亮 {{selectedCode}}</text>
+        <button bindtap="clearSelection">取消高亮</button>
+      </view>
+
+      <view class="color-card">
+        <view class="color-list-heading">
+          <view>
+            <text class="color-list-title">颜色清单</text>
+            <text class="color-list-subtitle">共 {{colors.length}} 种颜色 · {{totalBeads}} 颗</text>
+          </view>
+          <text class="sort-label">按数量排序</text>
+        </view>
+
+        <view class="color-list">
+          <view
+            wx:for="{{colors}}"
+            wx:key="code"
+            id="color-{{item.code}}"
+            class="color-item {{selectedCode === item.code ? 'is-selected' : ''}}"
+            data-code="{{item.code}}"
+            bindtap="selectColor"
+          >
+            <view class="color-swatch" style="background: {{item.hex}}"></view>
+            <text class="color-code">{{item.code}}</text>
+            <view class="amount-bar"><view style="width: {{item.percent}}%; background: {{item.hex}}"></view></view>
+            <text class="color-count">{{item.count}} 颗</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="bottom-space"></view>
+    </view>
+  </scroll-view>
+</view>

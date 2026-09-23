@@ -1,0 +1,15 @@
+.page-shell { box-sizing: border-box; min-height: 100vh; padding-bottom: calc(142rpx + env(safe-area-inset-bottom)); background: linear-gradient(180deg, #fff 0, #fff 300rpx, #f8f8fb 620rpx); }
+.header { padding: 24rpx 34rpx 30rpx; display: flex; flex-direction: column; align-items: flex-start; }
+.brand-logo { display: block; width: 252rpx; height: 112rpx; }
+.header-badge { margin-top: 18rpx; padding: 9rpx 18rpx; border-radius: 20rpx; background: #fff4d9; color: #95631b; font-size: 21rpx; }
+.content { padding: 0 28rpx; }
+.intro-copy { padding: 28rpx 8rpx 34rpx; text-align: center; }
+.intro-title { display: block; color: #252530; font-size: 32rpx; font-weight: 750; }
+.intro-subtitle { display: block; max-width: 590rpx; margin: 12rpx auto 0; color: #858591; font-size: 23rpx; line-height: 1.6; }
+size-selector,
+background-selector,
+color-limit-selector { display: block; margin-bottom: 24rpx; }
+.generate-button { height: 100rpx; margin-top: 10rpx; border-radius: 30rpx; background: linear-gradient(110deg, #6b4df4 0%, #7c56ff 52%, #955eea 100%); color: #fff; display: flex; align-items: center; justify-content: center; gap: 14rpx; font-size: 31rpx; font-weight: 700; line-height: 100rpx; box-shadow: 0 16rpx 30rpx rgba(105, 75, 238, .25); }
+.button-stars { color: #ffdc69; font-size: 34rpx; }
+.generate-tip { display: block; margin: 18rpx 0 28rpx; color: #aaa8b2; font-size: 20rpx; text-align: center; }
+.processor-canvas { position: fixed; left: -20000rpx; top: -20000rpx; width: 2rpx; height: 2rpx; pointer-events: none; }

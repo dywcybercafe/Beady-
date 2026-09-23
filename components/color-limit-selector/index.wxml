@@ -1,0 +1,34 @@
+<view class="card">
+  <view class="section-heading">
+    <image class="heading-icon" src="/assets/images/color-limit.png" mode="aspectFit"></image>
+    <view>
+      <text class="heading-title">颜色上限</text>
+      <text class="heading-caption">颜色越少，拼制越轻松</text>
+    </view>
+  </view>
+
+  <view class="color-grid">
+    <button
+      wx:for="{{options}}"
+      wx:key="*this"
+      class="color-button {{mode === 'preset' ? (value === item ? 'is-selected' : '') : ''}}"
+      data-value="{{item}}"
+      bindtap="selectPreset"
+    >
+      <text>{{item}}</text>
+      <text wx:if="{{item === 24}}" class="recommended">推荐</text>
+    </button>
+  </view>
+
+  <view class="custom-row {{mode === 'custom' ? 'is-selected' : ''}}" bindtap="openCustom">
+    <view>
+      <text class="custom-title">自定义颜色数</text>
+      <text class="custom-tip">最多 64 色</text>
+    </view>
+    <view wx:if="{{mode === 'custom'}}" class="custom-input-wrap" catchtap="noop">
+      <input type="number" maxlength="2" value="{{customValue}}" bindinput="onCustomInput" bindblur="normalizeCustom" />
+      <text>色</text>
+    </view>
+    <text wx:else class="chevron">›</text>
+  </view>
+</view>

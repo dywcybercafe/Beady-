@@ -1,0 +1,57 @@
+<view class="library-page">
+  <view class="safe-top"></view>
+  <view class="library-header">
+    <view class="library-brand">
+      <image class="library-logo" src="/assets/images/beady-logo.png" mode="aspectFit"></image>
+      <text>你的拼豆图纸收藏 ✨</text>
+    </view>
+    <view class="header-actions">
+      <button class="search-button" bindtap="toggleSearch"><view class="search-icon"></view></button>
+      <button class="new-button" bindtap="openAddSheet"><text>＋</text> 添加图纸</button>
+    </view>
+  </view>
+  <view class="search-panel {{searchVisible ? 'is-visible' : ''}}">
+    <input value="{{searchText}}" placeholder="搜索尺寸或图纸" bindinput="onSearchInput" focus="{{searchVisible}}" />
+  </view>
+
+  <scroll-view class="library-scroll" scroll-y="true" enhanced="true" show-scrollbar="false">
+    <view class="shelves">
+      <view wx:for="{{shelves}}" wx:key="theme" class="shelf-stage shelf-{{item.theme}}">
+        <view class="shelf-controls">
+          <button data-index="{{index}}" data-direction="-1" bindtap="moveShelf">‹</button>
+          <button data-index="{{index}}" data-direction="1" bindtap="moveShelf">›</button>
+        </view>
+
+        <view class="acrylic-back"></view>
+
+        <scroll-view
+          class="pattern-carousel"
+          scroll-x="true"
+          enhanced="true"
+          show-scrollbar="false"
+          scroll-with-animation="true"
+          scroll-left="{{item.scrollLeft}}"
+          data-index="{{index}}"
+          bindscroll="onShelfScroll"
+        >
+          <view class="carousel-track">
+            <view wx:for="{{item.items}}" wx:for-item="pattern" wx:key="id" class="pattern-item" style="width: {{pattern.displayWidth}}rpx; height: {{pattern.displayHeight}}rpx;" data-id="{{pattern.id}}" bindtap="openPattern">
+              <image class="imported-preview" src="{{pattern.imagePath}}" mode="aspectFit"></image>
+              <view wx:if="{{pattern.favorite}}" class="favorite-heart">♥</view>
+            </view>
+            <view class="carousel-tail"></view>
+          </view>
+        </scroll-view>
+
+        <view class="acrylic-front-rail"></view>
+        <image class="cloud-mascot cloud-{{item.side}}" src="{{item.cloud}}" mode="aspectFit"></image>
+        <view class="edge-highlight"></view>
+        <view class="screw screw-left"><view></view></view>
+        <view class="screw screw-right"><view></view></view>
+      </view>
+      <view class="library-bottom-space"></view>
+    </view>
+  </scroll-view>
+
+  <bottom-nav current="{{currentNav}}" bind:change="onNavChange" />
+</view>

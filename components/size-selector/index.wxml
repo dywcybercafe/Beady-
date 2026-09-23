@@ -1,0 +1,49 @@
+<view class="card">
+  <view class="section-heading">
+    <image class="heading-icon" src="/assets/images/canvas-size.png" mode="aspectFit"></image>
+    <view>
+      <text class="heading-title">图纸尺寸</text>
+      <text class="heading-caption">选择最终作品的豆数</text>
+    </view>
+  </view>
+
+  <view class="preset-grid">
+    <button
+      wx:for="{{presets}}"
+      wx:key="value"
+      class="option-button {{mode === 'preset' ? (preset === item.value ? 'is-selected' : '') : ''}}"
+      data-value="{{item.value}}"
+      bindtap="selectPreset"
+    >{{item.label}}</button>
+  </view>
+
+  <view class="custom-panel {{mode === 'custom' ? 'is-open' : ''}}">
+    <view class="custom-trigger" bindtap="openCustom">
+      <text>自定义尺寸</text>
+      <text class="chevron">{{mode === 'custom' ? '⌃' : '›'}}</text>
+    </view>
+
+    <view wx:if="{{mode === 'custom'}}" class="custom-content">
+      <view class="dimension-row">
+        <label class="field">
+          <text>宽度</text>
+          <input type="number" value="{{customWidth}}" bindinput="onWidthInput" />
+        </label>
+        <text class="times">×</text>
+        <label class="field">
+          <text>高度</text>
+          <input type="number" value="{{customHeight}}" bindinput="onHeightInput" />
+        </label>
+      </view>
+      <view class="lock-row" bindtap="toggleLock">
+        <view>
+          <text class="lock-title">锁定原图比例</text>
+          <text class="lock-tip">修改一边时自动计算另一边</text>
+        </view>
+        <view class="switch {{lockRatio ? 'switch-on' : ''}}">
+          <view class="switch-knob"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

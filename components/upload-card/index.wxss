@@ -1,0 +1,71 @@
+.upload-card {
+  position: relative;
+  overflow: hidden;
+  height: 410rpx;
+  border-radius: 32rpx;
+  background: #fbfdff;
+}
+
+.empty-state {
+  box-sizing: border-box;
+  height: 100%;
+  border: 3rpx dashed #9bd5ff;
+  border-radius: 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-illustration {
+  display: block;
+  width: 196rpx;
+  height: 162rpx;
+  margin-bottom: 14rpx;
+}
+
+.upload-title { color: #1f2029; font-size: 30rpx; font-weight: 650; }
+.upload-subtitle { margin-top: 12rpx; color: #8b8c99; font-size: 23rpx; }
+
+.preview-state,
+.preview-image,
+.preview-shade {
+  width: 100%;
+  height: 100%;
+}
+
+.preview-state { position: relative; }
+.preview-image { display: block; }
+.preview-shade { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(180deg, transparent 55%, rgba(18, 18, 27, .38)); }
+
+.remove-button {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  width: 58rpx;
+  height: 58rpx;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(28, 27, 35, .64);
+  color: #fff;
+  font-size: 40rpx;
+  line-height: 54rpx;
+}
+
+.replace-button {
+  position: absolute;
+  left: 24rpx;
+  bottom: 22rpx;
+  height: 70rpx;
+  padding: 0 30rpx;
+  border-radius: 35rpx;
+  background: rgba(255, 255, 255, .94);
+  color: #252631;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.replace-icon { color: #55ae63; }

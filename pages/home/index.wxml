@@ -1,0 +1,48 @@
+<view class="page-shell">
+  <view class="safe-top"></view>
+  <view class="header">
+    <image class="brand-logo" src="/assets/images/beady-logo.png" mode="aspectFit" aria-label="Beady"></image>
+    <view class="header-badge">把喜欢的图片变成拼豆图纸</view>
+  </view>
+
+  <view class="content">
+    <upload-card image-path="{{imagePath}}" bind:change="onImageChange" bind:remove="onImageRemove" />
+
+    <view class="intro-copy">
+      <text class="intro-title">从一张图片开始</text>
+      <text class="intro-subtitle">上传图片，选择尺寸与颜色数量，轻松制作你的专属图纸</text>
+    </view>
+
+    <size-selector
+      mode="{{sizeMode}}"
+      preset="{{selectedPreset}}"
+      custom-width="{{customWidth}}"
+      custom-height="{{customHeight}}"
+      lock-ratio="{{lockRatio}}"
+      image-ratio="{{imageRatio}}"
+      bind:presetchange="onPresetChange"
+      bind:modechange="onSizeModeChange"
+      bind:customchange="onCustomSizeChange"
+      bind:lockchange="onLockChange"
+    />
+
+    <background-selector value="{{backgroundMode}}" bind:change="onBackgroundChange" />
+
+    <color-limit-selector
+      mode="{{colorMode}}"
+      value="{{colorLimit}}"
+      custom-value="{{customColorLimit}}"
+      bind:change="onColorChange"
+      bind:customchange="onCustomColorChange"
+    />
+
+    <button class="generate-button" loading="{{isGenerating}}" disabled="{{isGenerating}}" bindtap="onGenerate">
+      <text>{{isGenerating ? '正在生成' : '生成图纸'}}</text>
+      <text class="button-stars">✦</text>
+    </button>
+    <text class="generate-tip">生成结果将使用颜色上限，不会强行填满颜色数</text>
+  </view>
+
+  <bottom-nav current="{{currentNav}}" bind:change="onNavChange" />
+  <canvas type="2d" id="processorCanvas" class="processor-canvas"></canvas>
+</view>

@@ -1,0 +1,38 @@
+.library-page { height: 100vh; overflow: hidden; background: #fff; color: #282632; }
+.library-header { padding: 18rpx 34rpx 10rpx; display: flex; align-items: center; justify-content: space-between; }
+.library-brand { min-width: 0; }
+.library-logo { display: block; width: 246rpx; height: 94rpx; }
+.library-brand text { display: block; margin-top: -4rpx; color: #7d8299; font-size: 22rpx; }
+.header-actions { display: flex; align-items: center; gap: 18rpx; }
+.search-button { position: relative; width: 76rpx; height: 76rpx; padding: 0; border: 2rpx solid #eeedf3; border-radius: 50%; background: rgba(255,255,255,.86); box-shadow: 0 5rpx 18rpx rgba(47,38,81,.04); }
+.search-icon { position: absolute; left: 24rpx; top: 21rpx; width: 23rpx; height: 23rpx; border: 4rpx solid #2d2a39; border-radius: 50%; }
+.search-icon::after { content: ''; position: absolute; width: 15rpx; height: 4rpx; right: -11rpx; bottom: -7rpx; border-radius: 3rpx; background: #2d2a39; transform: rotate(48deg); }
+.new-button { height: 76rpx; margin: 0; padding: 0 28rpx; border-radius: 38rpx; background: linear-gradient(115deg, #7551f5, #7c42f4); color: #fff; font-size: 25rpx; line-height: 76rpx; box-shadow: 0 10rpx 24rpx rgba(111,73,242,.18); }
+.new-button text { margin-right: 6rpx; font-size: 35rpx; font-weight: 300; }
+.search-panel { height: 0; padding: 0 34rpx; overflow: hidden; opacity: 0; transition: all .2s ease; }
+.search-panel.is-visible { height: 82rpx; opacity: 1; }
+.search-panel input { height: 64rpx; padding: 0 24rpx; border: 2rpx solid #ebe8f1; border-radius: 22rpx; background: #faf9fc; font-size: 24rpx; }
+.library-scroll { height: calc(100vh - 136rpx - env(safe-area-inset-top)); }
+.shelves { padding: 20rpx 0 0; }
+.shelf-stage { --acrylic-back: rgba(255, 93, 180, .07); --acrylic-rail: rgba(255, 93, 180, .14); --acrylic-edge: rgba(244, 91, 174, .52); --acrylic-depth: rgba(226, 65, 155, .19); position: relative; height: 324rpx; margin: 0 24rpx 34rpx; overflow: visible; isolation: isolate; }
+.shelf-blue { --acrylic-back: rgba(70, 165, 255, .07); --acrylic-rail: rgba(70, 165, 255, .13); --acrylic-edge: rgba(68, 161, 245, .5); --acrylic-depth: rgba(42, 130, 218, .18); }
+.shelf-green { --acrylic-back: rgba(63, 219, 143, .07); --acrylic-rail: rgba(63, 219, 143, .13); --acrylic-edge: rgba(48, 197, 126, .5); --acrylic-depth: rgba(30, 165, 99, .17); }
+.shelf-yellow { --acrylic-back: rgba(255, 200, 43, .07); --acrylic-rail: rgba(255, 200, 43, .13); --acrylic-edge: rgba(229, 176, 28, .5); --acrylic-depth: rgba(205, 150, 13, .17); }
+.acrylic-back { position: absolute; z-index: 1; left: 18rpx; right: 18rpx; bottom: 14rpx; height: 106rpx; border: 2rpx solid var(--acrylic-edge); border-radius: 17rpx 17rpx 20rpx 20rpx; background: var(--acrylic-back); box-shadow: 0 7rpx 16rpx rgba(50, 43, 75, .045); }
+.pattern-carousel { position: absolute; z-index: 2; left: 46rpx; right: 38rpx; top: 34rpx; height: 238rpx; white-space: nowrap; scroll-snap-type: x mandatory; }
+.carousel-track { height: 238rpx; display: inline-flex; align-items: flex-end; gap: 22rpx; padding: 0 58rpx 0 32rpx; }
+.carousel-tail { flex: none; width: 84rpx; }
+.pattern-item { position: relative; flex: none; overflow: visible; background: transparent; scroll-snap-align: start; }
+.imported-preview { display: block; width: 100%; height: 100%; }
+.favorite-heart { position: absolute; z-index: 2; top: -13rpx; right: -13rpx; width: 34rpx; height: 34rpx; border: 3rpx solid rgba(255,255,255,.9); border-radius: 50%; background: #fff; color: #ff5c90; font-size: 23rpx; line-height: 31rpx; text-align: center; box-shadow: 0 4rpx 10rpx rgba(124,62,90,.16); }
+.shelf-controls { position: absolute; z-index: 6; right: 24rpx; top: -18rpx; display: flex; gap: 10rpx; }
+.shelf-controls button { width: 58rpx; height: 58rpx; margin: 0; padding: 0; border-radius: 50%; background: #f6f5fa; color: #8589a1; font-size: 40rpx; font-weight: 300; line-height: 52rpx; box-shadow: 0 4rpx 12rpx rgba(51,43,82,.04); }
+.shelf-controls button:last-child { color: #26283b; }
+.acrylic-front-rail { position: absolute; z-index: 3; left: 18rpx; right: 18rpx; bottom: 10rpx; height: 60rpx; border: 2rpx solid var(--acrylic-edge); border-radius: 12rpx 12rpx 20rpx 20rpx; background: var(--acrylic-rail); box-shadow: 0 10rpx 18rpx rgba(48, 43, 74, .055), inset 0 -11rpx 0 var(--acrylic-depth); }
+.cloud-mascot { position: absolute; z-index: 4; width: 200rpx; height: 158rpx; bottom: 5rpx; pointer-events: none; }
+.cloud-left { left: -4rpx; }.cloud-right { right: -4rpx; }
+.edge-highlight { position: absolute; z-index: 5; left: 30rpx; right: 30rpx; bottom: 66rpx; height: 2rpx; border-radius: 2rpx; background: rgba(255, 255, 255, .86); box-shadow: 0 1rpx 0 rgba(255, 255, 255, .35); pointer-events: none; }
+.screw { position: absolute; z-index: 5; bottom: 26rpx; width: 18rpx; height: 18rpx; border-radius: 50%; background: linear-gradient(145deg, #f8fbfc, #929aa3 52%, #dce2e7); box-shadow: inset 0 1rpx 2rpx rgba(255,255,255,.8), 0 1rpx 3rpx rgba(42,46,52,.22); }
+.screw view { position: absolute; left: 4rpx; right: 4rpx; top: 8rpx; height: 2rpx; background: rgba(80,86,93,.5); transform: rotate(28deg); }
+.screw-left { left: 26rpx; }.screw-right { right: 26rpx; }
+.library-bottom-space { height: calc(150rpx + env(safe-area-inset-bottom)); }

@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "upload-card": "/components/upload-card/index",
+    "size-selector": "/components/size-selector/index",
+    "background-selector": "/components/background-selector/index",
+    "color-limit-selector": "/components/color-limit-selector/index",
+    "bottom-nav": "/components/bottom-nav/index"
+  }
+}

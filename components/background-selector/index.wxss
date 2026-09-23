@@ -1,0 +1,21 @@
+.card { padding: 28rpx; border-radius: 30rpx; background: #fff; box-shadow: 0 10rpx 40rpx rgba(52, 45, 90, .06); }
+.section-heading { display: flex; align-items: center; gap: 18rpx; margin-bottom: 24rpx; }
+.heading-icon { flex: none; width: 56rpx; height: 56rpx; border-radius: 16rpx; }
+.heading-title { display: block; font-size: 30rpx; line-height: 1.2; font-weight: 700; }
+.heading-caption { display: block; margin-top: 7rpx; color: #9a99a6; font-size: 22rpx; }
+.option { box-sizing: border-box; min-height: 108rpx; padding: 16rpx 18rpx; border: 2rpx solid #ececf2; border-radius: 22rpx; display: flex; align-items: center; gap: 18rpx; background: #fff; }
+.option + .option { margin-top: 14rpx; }
+.option.is-selected { border-color: #7858ff; background: linear-gradient(135deg, #fbf9ff, #f5f2ff); box-shadow: inset 0 0 0 1rpx rgba(120,88,255,.1); }
+.option-art { position: relative; flex: none; overflow: hidden; width: 72rpx; height: 72rpx; border-radius: 20rpx; }
+.keep-art { background: linear-gradient(#a8dcff 58%, #8dd981 58%); }
+.mini-sun { position: absolute; right: 12rpx; top: 11rpx; width: 16rpx; height: 16rpx; border-radius: 50%; background: #ffd356; }
+.mini-hill { position: absolute; left: 10rpx; bottom: -20rpx; width: 56rpx; height: 56rpx; border-radius: 12rpx; background: #51b775; transform: rotate(45deg); }
+.subject-art { background: #efedf4; }
+.checker { position: absolute; inset: 0; opacity: .55; background-color: #fff; background-image: linear-gradient(45deg,#c7c7ce 25%,transparent 25%),linear-gradient(-45deg,#c7c7ce 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c7c7ce 75%),linear-gradient(-45deg,transparent 75%,#c7c7ce 75%); background-size: 20rpx 20rpx; background-position: 0 0,0 10rpx,10rpx -10rpx,-10rpx 0; }
+.subject-shape { position: absolute; left: 20rpx; top: 14rpx; width: 34rpx; height: 46rpx; border-radius: 50% 50% 42% 42%; background: #9a7bf8; }
+.option-copy { flex: 1; min-width: 0; }
+.option-title { display: block; color: #292933; font-size: 27rpx; font-weight: 650; }
+.option-description { display: block; margin-top: 8rpx; color: #898894; font-size: 22rpx; }
+.radio { box-sizing: border-box; flex: none; width: 34rpx; height: 34rpx; padding: 7rpx; border: 3rpx solid #d5d4dc; border-radius: 50%; }
+.radio-dot { width: 100%; height: 100%; border-radius: 50%; }
+.is-selected .radio { border-color: #7657f6; }.is-selected .radio-dot { background: #7657f6; }

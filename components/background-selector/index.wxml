@@ -1,0 +1,33 @@
+<view class="card">
+  <view class="section-heading">
+    <image class="heading-icon" src="/assets/images/background.png" mode="aspectFit"></image>
+    <view>
+      <text class="heading-title">背景处理</text>
+      <text class="heading-caption">决定哪些区域参与生成</text>
+    </view>
+  </view>
+
+  <view class="option {{value === 'keep' ? 'is-selected' : ''}}" data-value="keep" bindtap="selectOption">
+    <view class="option-art keep-art">
+      <view class="mini-sun"></view>
+      <view class="mini-hill"></view>
+    </view>
+    <view class="option-copy">
+      <text class="option-title">保留背景</text>
+      <text class="option-description">整张图片一起生成图纸</text>
+    </view>
+    <view class="radio"><view class="radio-dot"></view></view>
+  </view>
+
+  <view class="option {{value === 'subject' ? 'is-selected' : ''}}" data-value="subject" bindtap="selectOption">
+    <view class="option-art subject-art">
+      <view class="checker"></view>
+      <view class="subject-shape"></view>
+    </view>
+    <view class="option-copy">
+      <text class="option-title">仅保留主体</text>
+      <text class="option-description">去除背景，只转换主要对象</text>
+    </view>
+    <view class="radio"><view class="radio-dot"></view></view>
+  </view>
+</view>

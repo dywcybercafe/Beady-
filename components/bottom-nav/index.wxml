@@ -1,0 +1,16 @@
+<view class="nav-shell">
+  <view class="nav-inner">
+    <view class="nav-item {{current === 'create' ? 'is-active' : ''}}" data-value="create" bindtap="selectItem">
+      <view class="nav-icon home-icon"><view class="roof"></view><view class="house"></view><view class="door"></view></view>
+      <text>图纸生成</text>
+    </view>
+    <view class="nav-item {{current === 'library' ? 'is-active' : ''}}" data-value="library" bindtap="selectItem">
+      <view class="nav-icon folder-icon"><view class="folder-tab"></view><view class="folder-body"></view></view>
+      <text>图库</text>
+    </view>
+    <view class="nav-item {{current === 'board' ? 'is-active' : ''}}" data-value="board" bindtap="selectItem">
+      <view class="nav-icon sparkle-icon">✧</view>
+      <text>毛毡板</text>
+    </view>
+  </view>
+</view>
