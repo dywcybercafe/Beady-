@@ -1,40 +1,116 @@
 (function exposeBackgroundRemovalClient(global) {
   const MODEL_NAME = 'u2netp'
-  const MODEL_PATH = './models/u2netp.onnx'
-  const WASM_PATH = './vendor/onnxruntime/'
+  const SCRIPT_URL = document.currentScript && document.currentScript.src
+    ? document.currentScript.src
+    : new URL('./background-removal.js', document.baseURI).href
+  const ASSET_BASE_URL = new URL('./', SCRIPT_URL)
+  const MODEL_URL = new URL('models/u2netp.onnx', ASSET_BASE_URL).href
+  const WASM_MODULE_URL = new URL('vendor/onnxruntime/ort-wasm-simd-threaded.mjs', ASSET_BASE_URL).href
+  const WASM_BINARY_URL = new URL('vendor/onnxruntime/ort-wasm-simd-threaded.wasm', ASSET_BASE_URL).href
   const ALPHA_THRESHOLD = 8
   const CROP_PADDING = 2
 
   let sessionPromise = null
+  let runtimePromise = null
+  let runtimeDiagnostics = null
 
-  function requireRuntime() {
+  function configureRuntime() {
     const ort = global.ort
     const rembg = global.RembgWeb
     if (!ort || !rembg) throw new Error('本地抠图组件加载失败，请刷新页面后重试')
 
-    ort.env.wasm.wasmPaths = new URL(WASM_PATH, document.baseURI).href
-    // A single WASM thread avoids cross-origin isolation and works on GitHub Pages.
+    // Bind exact same-origin files instead of letting ORT infer paths. This is
+    // safe under localhost and a GitHub Pages repository sub-path alike.
+    ort.env.wasm.wasmPaths = {
+      mjs: WASM_MODULE_URL,
+      wasm: WASM_BINARY_URL
+    }
     ort.env.wasm.numThreads = 1
     ort.env.wasm.proxy = false
+    ort.env.wasm.simd = true
+    ort.env.wasm.initTimeout = 120000
     rembg.rembgConfig.enableGeneralLogging(false)
     rembg.rembgConfig.enablePerformanceLogging(false)
-    rembg.rembgConfig.setCustomModelPath(MODEL_NAME, new URL(MODEL_PATH, document.baseURI).href)
-    return rembg
+    rembg.rembgConfig.setCustomModelPath(MODEL_NAME, MODEL_URL)
+    return { ort, rembg }
+  }
+
+  async function inspectAsset(url, expectedType) {
+    const diagnostic = { url, status: 0, contentType: '', ok: false }
+    try {
+      const response = await fetch(url, { method: 'HEAD', cache: 'no-cache', credentials: 'same-origin' })
+      diagnostic.status = response.status
+      diagnostic.contentType = response.headers.get('content-type') || ''
+      diagnostic.ok = response.ok
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      if (expectedType && !diagnostic.contentType.toLowerCase().includes(expectedType)) {
+        throw new Error(`Content-Type ${diagnostic.contentType || '缺失'}，期望 ${expectedType}`)
+      }
+      return diagnostic
+    } catch (error) {
+      diagnostic.error = error && error.message ? error.message : String(error)
+      const failure = new Error(
+        `WASM 静态资源加载失败\nURL: ${url}\nHTTP: ${diagnostic.status || '无响应'}\n` +
+        `Content-Type: ${diagnostic.contentType || '未知'}\n原因: ${diagnostic.error}`
+      )
+      failure.diagnostics = diagnostic
+      throw failure
+    }
+  }
+
+  function ensureRuntimeReady() {
+    if (runtimePromise) return runtimePromise
+    runtimePromise = Promise.resolve().then(async () => {
+      configureRuntime()
+      const results = await Promise.all([
+        inspectAsset(WASM_MODULE_URL, 'javascript'),
+        inspectAsset(WASM_BINARY_URL, 'application/wasm')
+      ])
+      runtimeDiagnostics = {
+        pageUrl: location.href,
+        secureContext: global.isSecureContext,
+        assets: results
+      }
+      console.info('[Beady WASM] runtime assets ready', runtimeDiagnostics)
+      return global.RembgWeb
+    }).catch(error => {
+      runtimePromise = null
+      console.error('[Beady WASM] runtime initialization failed', error.diagnostics || {
+        pageUrl: location.href,
+        moduleUrl: WASM_MODULE_URL,
+        wasmUrl: WASM_BINARY_URL,
+        reason: error.message
+      })
+      throw error
+    })
+    return runtimePromise
+  }
+
+  function requireRuntime() {
+    return configureRuntime().rembg
   }
 
   function getSession() {
     if (sessionPromise) return sessionPromise
-    sessionPromise = Promise.resolve().then(() => {
-      const rembg = requireRuntime()
+    sessionPromise = ensureRuntimeReady().then(rembg => {
       return rembg.newSession(MODEL_NAME, undefined, {
+        executionProviders: ['wasm'],
         preferWebNN: false,
         preferWebGPU: false,
+        simd: true,
+        proxy: false,
+        numThreads: 1,
         bypassSessionCache: false,
         bypassModelCache: false
       })
     }).catch(error => {
       sessionPromise = null
-      throw error
+      const details = runtimeDiagnostics && runtimeDiagnostics.assets
+        ? runtimeDiagnostics.assets.map(asset => `${asset.url} -> HTTP ${asset.status}, ${asset.contentType || 'unknown MIME'}`).join('\n')
+        : `WASM: ${WASM_BINARY_URL}`
+      const wrapped = new Error(`${error.message}\n${details}`)
+      wrapped.cause = error
+      throw wrapped
     })
     return sessionPromise
   }
@@ -193,5 +269,14 @@
     })
   }
 
-  global.BeadyBackgroundRemoval = { removeBackground, preload: getSession, modelName: MODEL_NAME }
+  global.BeadyBackgroundRemoval = {
+    removeBackground,
+    preload: getSession,
+    modelName: MODEL_NAME,
+    getRuntimeDiagnostics: () => runtimeDiagnostics || {
+      pageUrl: location.href,
+      moduleUrl: WASM_MODULE_URL,
+      wasmUrl: WASM_BINARY_URL
+    }
+  }
 })(window)

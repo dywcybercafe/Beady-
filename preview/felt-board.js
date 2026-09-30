@@ -6,7 +6,6 @@
   const hint = document.querySelector('#feltHint')
   const fileInput = document.querySelector('#feltFileInput')
   const gallery = document.querySelector('#feltGallery')
-  const galleryBackdrop = document.querySelector('#feltGalleryBackdrop')
   const galleryGrid = document.querySelector('#feltGalleryGrid')
   const state = {
     objects: [],
@@ -25,9 +24,6 @@
 
   function updateWorldTransform() {
     world.style.transform = `translate(${state.view.x}px,${state.view.y}px) scale(${state.view.scale})`
-    const textureSize = 620 * state.view.scale
-    canvas.style.backgroundSize = `auto, ${textureSize}px auto`
-    canvas.style.backgroundPosition = `0 0, ${state.view.x % textureSize}px ${state.view.y % textureSize}px`
   }
 
   function objectTransform(item) {
@@ -334,7 +330,7 @@
     })
     const width = Math.max(1, maxX - minX)
     const height = Math.max(1, maxY - minY)
-    const scale = Math.max(.15, Math.min(3, Math.min(canvas.clientWidth * .76 / width, canvas.clientHeight * .72 / height)))
+    const scale = Math.max(.15, Math.min(3, Math.min(canvas.clientWidth * .8 / width, canvas.clientHeight * .8 / height)))
     state.view.scale = scale
     state.view.x = canvas.clientWidth / 2 - (minX + maxX) / 2 * scale
     state.view.y = canvas.clientHeight / 2 - (minY + maxY) / 2 * scale + 12
@@ -373,6 +369,7 @@
       })
       db.close()
     } catch (error) { state.artworks = [] }
+    renderGallery()
   }
 
   async function importFile(file) {
@@ -394,6 +391,7 @@
       const artwork = { ...result, id: uid('source'), createdAt: Date.now() }
       state.artworks.unshift(artwork)
       await saveArtwork(artwork)
+      renderGallery()
       addArtwork(artwork)
       if (global.showToast) global.showToast('已去除背景并添加到毛毡板')
     } catch (error) {
@@ -411,8 +409,10 @@
       : '<div class="felt-gallery-empty">还没有作品，上传一张现实拼豆照片试试吧 ✨</div>'
   }
 
-  function openGallery() { renderGallery(); gallery.hidden = false; galleryBackdrop.hidden = false }
-  function closeGallery() { gallery.hidden = true; galleryBackdrop.hidden = true }
+  function openGallery() {
+    renderGallery()
+    gallery.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   function show() {
     document.querySelector('#homeView').hidden = true
@@ -428,13 +428,13 @@
       }
       updateWorldTransform()
       renderObjects()
+      renderGallery()
     })
   }
 
   function hide() {
     viewElement.hidden = true
     document.querySelector('.app-shell').classList.remove('felt-active')
-    closeGallery()
   }
 
   canvas.addEventListener('pointerdown', startCanvasGesture)
@@ -460,25 +460,20 @@
   document.querySelector('#feltAdd').addEventListener('click', () => fileInput.click())
   fileInput.addEventListener('change', () => { if (fileInput.files[0]) importFile(fileInput.files[0]) })
   document.querySelector('#feltMine').addEventListener('click', openGallery)
-  document.querySelector('#feltGalleryClose').addEventListener('click', closeGallery)
-  galleryBackdrop.addEventListener('click', closeGallery)
   galleryGrid.addEventListener('click', event => {
     const button = event.target.closest('[data-source-id]')
     if (!button) return
     const artwork = state.artworks.find(item => item.id === button.dataset.sourceId)
-    if (artwork) { closeGallery(); addArtwork(artwork) }
+    if (artwork) {
+      addArtwork(artwork)
+      document.querySelector('.felt-board-shell').scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
   })
   document.querySelector('#feltUndo').addEventListener('click', () => restoreHistory(state.historyIndex - 1))
   document.querySelector('#feltRedo').addEventListener('click', () => restoreHistory(state.historyIndex + 1))
   document.querySelector('#feltFit').addEventListener('click', fitToScreen)
-  document.querySelector('#feltBrand').addEventListener('click', () => {
+  document.querySelector('#feltBack').addEventListener('click', () => {
     hide(); document.querySelector('#homeView').hidden = false
-  })
-  document.querySelector('[data-felt-nav="home"]').addEventListener('click', () => {
-    hide(); document.querySelector('#homeView').hidden = false
-  })
-  document.querySelector('[data-felt-nav="library"]').addEventListener('click', () => {
-    hide(); if (global.showLibraryView) global.showLibraryView()
   })
   window.addEventListener('resize', () => { if (!viewElement.hidden) updateWorldTransform() })
   loadArtworks()

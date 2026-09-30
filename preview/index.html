@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Beady</title>
-    <link rel="stylesheet" href="./styles.css?v=14" />
+    <link rel="stylesheet" href="./styles.css?v=15" />
 </head>
 <body>
   <main class="app-shell">
@@ -164,52 +164,47 @@
     </section>
 
     <section class="felt-view" id="feltView" hidden>
-      <div class="felt-canvas" id="feltCanvas" aria-label="毛毡板无限画布">
-        <div class="felt-world" id="feltWorld"></div>
-        <div class="felt-empty" id="feltEmpty">
-          <span>✦</span>
-          <strong>把快乐钉在这里</strong>
-          <small>添加你的第一个拼豆作品</small>
-        </div>
-      </div>
-
       <header class="felt-header">
-        <button class="felt-brand" id="feltBrand" type="button" aria-label="返回图纸生成">
-          <img src="../assets/images/beady-logo.png" alt="Beady" />
-          <span>Pin your little happiness ☺</span>
-        </button>
-        <div class="felt-tools">
-          <button id="feltUndo" type="button" aria-label="撤销" disabled>↶</button>
-          <button id="feltRedo" type="button" aria-label="重做" disabled>↷</button>
-          <button class="felt-fit" id="feltFit" type="button"><i></i><span>适应</span></button>
+        <div class="felt-tools felt-tools-left">
+          <button id="feltBack" type="button" aria-label="返回图纸生成"><span>←</span></button>
+          <button id="feltUndo" type="button" aria-label="撤销" disabled><span>↶</span></button>
+          <button id="feltRedo" type="button" aria-label="重做" disabled><span>↷</span></button>
         </div>
+        <img class="felt-logo" src="../assets/images/beady-logo.png" alt="Beady" />
+        <button class="felt-fit" id="feltFit" type="button" aria-label="适应屏幕"><i></i></button>
       </header>
 
-      <div class="felt-hint" id="feltHint">拖动空白处浏览画布 · 点击作品进行操作</div>
+      <div class="felt-page-content">
+        <div class="felt-board-shell">
+          <div class="felt-canvas" id="feltCanvas" aria-label="毛毡板无限画布">
+            <div class="felt-world" id="feltWorld"></div>
+            <div class="felt-empty" id="feltEmpty">
+              <span>✦</span>
+              <strong>把快乐钉在这里</strong>
+              <small>添加你的第一个拼豆作品</small>
+            </div>
+          </div>
+          <div class="felt-hint" id="feltHint">拖动空白处浏览 · 双指缩放画布</div>
+        </div>
 
-      <footer class="felt-dock">
         <div class="felt-actions">
-          <button class="felt-mine" id="feltMine" type="button"><span>◈</span>我的拼豆</button>
+          <button class="felt-mine" id="feltMine" type="button"><img src="../assets/images/upload-cloud.png" alt="" />我的拼豆</button>
           <button class="felt-add" id="feltAdd" type="button"><span>＋</span>添加拼豆</button>
           <input id="feltFileInput" type="file" accept="image/*" hidden />
         </div>
-        <nav class="felt-nav" aria-label="主导航">
-          <button type="button" data-felt-nav="home"><span>⌂</span><small>图纸生成</small></button>
-          <button type="button" data-felt-nav="library"><span>▢</span><small>图库</small></button>
-          <button class="active" type="button"><span>✧</span><small>毛毡板</small></button>
-        </nav>
-      </footer>
+
+        <section class="felt-gallery" id="feltGallery" aria-label="我的拼豆">
+          <header>
+            <div class="felt-gallery-title"><img src="../assets/images/upload-cloud.png" alt="" /><div><h2>我的拼豆</h2><p>点击作品即可添加到毛毡板</p></div></div>
+          </header>
+          <div class="felt-gallery-grid" id="feltGalleryGrid"></div>
+        </section>
+      </div>
 
       <div class="felt-processing" id="feltProcessing" hidden>
         <div class="felt-loader"><i></i><strong id="feltProcessingStatus">正在本机识别主要前景…</strong><small id="feltProcessingDetail">首次需加载 u2netp，图片不会上传服务器</small></div>
       </div>
 
-      <div class="felt-gallery-backdrop" id="feltGalleryBackdrop" hidden></div>
-      <aside class="felt-gallery" id="feltGallery" hidden aria-label="我的拼豆">
-        <div class="felt-gallery-handle"></div>
-        <header><div><h2>我的拼豆</h2><p>已生成透明背景的作品</p></div><button id="feltGalleryClose" type="button" aria-label="关闭">×</button></header>
-        <div class="felt-gallery-grid" id="feltGalleryGrid"></div>
-      </aside>
     </section>
     <div class="toast" id="toast" role="status"></div>
   </main>
@@ -230,8 +225,8 @@
   <script src="../services/image/beadGridRecognizer.js?v=1"></script>
   <script src="./vendor/onnxruntime/ort.wasm.min.js?v=1"></script>
   <script src="./vendor/rembg-web/index.umd.min.js?v=1"></script>
-  <script src="./background-removal.js?v=3"></script>
-  <script src="./felt-board.js?v=3"></script>
+  <script src="./background-removal.js?v=4"></script>
+  <script src="./felt-board.js?v=4"></script>
     <script src="./app.js?v=16"></script>
 </body>
 </html>
